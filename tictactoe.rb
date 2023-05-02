@@ -10,7 +10,7 @@ class Game
     puts "\n"
   end
 
-  def game_commence
+  def start_game
     show_board
     player_turn(@player1)
     player_turn(@player2)
@@ -49,4 +49,4 @@ player1 = Player.new('Player 1', 'X')
 player2 = Player.new('Player 2', 'O')
 game_board = Game.new(player1, player2)
 
-game_board.game_commence
+game_board.start_game
