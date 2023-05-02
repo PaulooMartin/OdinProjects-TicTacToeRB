@@ -1,3 +1,11 @@
+class GameBoard
+  @@board = Array.new(3) { Array.new(3, '-') }
+
+  def self.show_board
+    @@board.each { |row| puts row.join(' ')}
+  end
+end
+
 class Player
   attr_reader :symbol
 
@@ -10,8 +18,6 @@ class Player
   end
 end
 
-game_board = Array.new(3) { Array.new(3, '-') }
-game_board.each { |row| puts row.join(' ') }
-
 player_1 = Player.new('X')
 player_2 = Player.new('O')
+GameBoard.show_board
