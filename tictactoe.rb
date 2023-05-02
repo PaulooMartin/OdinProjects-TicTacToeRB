@@ -1,6 +1,12 @@
 class Player
+  attr_reader :symbol
+
   def initialize(symbol)
     @symbol = symbol
+  end
+
+  def place_symbol
+    coordinate1, coordinate2 = gets.chomp.split(',')
   end
 end
 
