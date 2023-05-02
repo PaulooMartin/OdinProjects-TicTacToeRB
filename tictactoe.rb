@@ -15,13 +15,16 @@ class Player
     @symbol = symbol
   end
 
+  def turn
+    self.get_coordinates
+  end
+
+  private
   def get_coordinates
     coordinate1, coordinate2 = gets.chomp.split(',')
   end
 end
 
-game_board = Game.new
 player_1 = Player.new('X')
 player_2 = Player.new('O')
-
-game_board.show
+game_board = Game.new
