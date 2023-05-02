@@ -34,12 +34,12 @@ class Player
   end
 
   def turn
-    get_coordinates
+    coordinates
   end
 
   private
 
-  def get_coordinates
+  def coordinates
     puts "#{@name}'s turn"
     coordinate1, coordinate2 = gets.chomp.split(',')
   end
