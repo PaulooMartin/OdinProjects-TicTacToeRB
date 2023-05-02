@@ -20,7 +20,7 @@ class Game
 
   def player_turn(player)
     coords = player.turn
-    @board[coords[0].to_i][coords[1].to_i] = player.symbol
+    @board[coords[0]][coords[1]] = player.symbol
     show_board
   end
 end
@@ -42,6 +42,7 @@ class Player
   def coordinates
     puts "#{@name}'s turn"
     coordinate1, coordinate2 = gets.chomp.split(',')
+    [coordinate1.to_i, coordinate2.to_i]
   end
 end
 
