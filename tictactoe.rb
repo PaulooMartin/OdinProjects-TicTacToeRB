@@ -20,8 +20,15 @@ class Game
 
   def player_turn(player)
     coords = player.turn
-    @board[coords[0].to_i][coords[1].to_i] = player.symbol
+    coords = player.turn until valid_placement?(coords)
+    @board[coords[0]][coords[1]] = player.symbol
     show_board
+  end
+
+  def valid_placement?(coords)
+    check = @board[coords[0]][coords[1]].include?('-')
+    puts "~~~~Invalid placement~~~~\n" unless check
+    check
   end
 end
 
@@ -44,17 +51,16 @@ class Player
     until valid_coords?(coordinates)
       puts "#{@name}'s turn (Type in the coordinates: '#,#')"
       coordinates = gets.chomp.split(',')
-      valid_coords?(coordinates)
     end
-    coordinates
+    coordinates.map(&:to_i)
   end
 
   def valid_coords?(coordinates)
     return false if coordinates.empty?
 
     check = coordinates.length == 2
-    check2 = coordinates.all? { |coord| coord.match(/^\d$/) } # All should be a single digit
-    check3 = # All those digits should be < 4
+    check2 = coordinates.all? { |coord| coord.match(/^\d$/) }
+    check3 =
       coordinates.all? do |coord|
         (coord.to_i < 3) && (coord.to_i >= 0)
       end
