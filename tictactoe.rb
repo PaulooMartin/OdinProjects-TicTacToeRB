@@ -31,6 +31,35 @@ class Game
     puts "~~~~Invalid placement~~~~\n \n" unless check
     check
   end
+
+  def someone_win_row?
+    @board.any? do |row|
+      row.all? { |symbol| symbol == row[0] }
+    end
+  end
+
+  def someone_win_column?
+    flattened = @board.flatten
+    index = -1
+    flattened[0..2].any? do |column_sym|
+      index += 1
+      column_sym == flattened[index + 3] && column_sym == flattened[index + 6]
+    end
+  end
+
+  def someone_win_diagonal?
+    flattened = @board.flatten
+    index = -1
+    flattened[0..2].any? do |corner_sym|
+      index += 1
+      case index
+      when 0
+        corner_sym == flattened[4] && corner_sym == flattened[8]
+      when 2
+        corner_sym == flattened[4] && corner_sym == flattened[6]
+      end
+    end
+  end
 end
 
 class Player
@@ -42,12 +71,12 @@ class Player
   end
 
   def turn
-    coordinates
+    grab_coordinates
   end
 
   private
 
-  def coordinates
+  def grab_coordinates
     coordinates = []
     until valid_coords?(coordinates)
       puts "#{@name}'s turn (Type in the coordinates: '#,#')"
@@ -74,5 +103,4 @@ player2 = Player.new('Player two', 'O')
 game_board = Game.new(player1, player2)
 
 game_board.start_game
-
-# TODO: Until player wins, error handling, determine winner
+# TODO: Until player wins, determine winner
