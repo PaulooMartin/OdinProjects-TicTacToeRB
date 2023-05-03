@@ -49,16 +49,9 @@ class Game
 
   def someone_win_diagonal?
     flattened = @board.flatten
-    index = -1
-    flattened[0..2].any? do |corner_sym|
-      index += 1
-      case index
-      when 0
-        corner_sym == flattened[4] && corner_sym == flattened[8]
-      when 2
-        corner_sym == flattened[4] && corner_sym == flattened[6]
-      end
-    end
+    corner1 = flattened[0] == flattened[4] && flattened[0] == flattened[8]
+    corner2 = flattened[2] == flattened[4] && flattened[2] == flattened[6]
+    corner1 || corner2
   end
 end
 
@@ -102,5 +95,5 @@ player1 = Player.new('Player one', 'X')
 player2 = Player.new('Player two', 'O')
 game_board = Game.new(player1, player2)
 
-game_board.start_game
+puts game_board.someone_win_diagonal?
 # TODO: Until player wins, determine winner
