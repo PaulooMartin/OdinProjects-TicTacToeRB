@@ -6,7 +6,7 @@ class Game
   end
 
   def show_board
-    @board.each { |row| puts row.join(' ')}
+    @board.each { |row| puts row.join(' ') }
     puts "\n"
   end
 
@@ -20,7 +20,7 @@ class Game
 
   def player_turn(player)
     coords = player.turn
-    @board[coords[0]][coords[1]] = player.symbol
+    @board[coords[0].to_i][coords[1].to_i] = player.symbol
     show_board
   end
 end
@@ -40,14 +40,32 @@ class Player
   private
 
   def coordinates
-    puts "#{@name}'s turn"
-    coordinate1, coordinate2 = gets.chomp.split(',')
-    [coordinate1.to_i, coordinate2.to_i]
+    coordinates = []
+    until valid_coords?(coordinates)
+      puts "#{@name}'s turn (Type in the coordinates: '#,#')"
+      coordinates = gets.chomp.split(',')
+      valid_coords?(coordinates)
+    end
+    coordinates
+  end
+
+  def valid_coords?(coordinates)
+    return false if coordinates.empty?
+
+    check = coordinates.length == 2
+    check2 = coordinates.all? { |coord| coord.match(/^\d$/) } # All should be a single digit
+    check3 = # All those digits should be < 4
+      coordinates.all? do |coord|
+        (coord.to_i < 3) && (coord.to_i >= 0)
+      end
+    check && check2 && check3
   end
 end
 
-player1 = Player.new('Player 1', 'X')
-player2 = Player.new('Player 2', 'O')
+player1 = Player.new('Player one', 'X')
+player2 = Player.new('Player two', 'O')
 game_board = Game.new(player1, player2)
 
 game_board.start_game
+
+# TODO: Until player wins, error handling, determine winner
