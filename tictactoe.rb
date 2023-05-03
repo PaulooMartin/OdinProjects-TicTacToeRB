@@ -6,6 +6,7 @@ class Game
   end
 
   def show_board
+    puts "\n"
     @board.each { |row| puts row.join(' ') }
     puts "\n"
   end
@@ -27,7 +28,7 @@ class Game
 
   def valid_placement?(coords)
     check = @board[coords[0]][coords[1]].include?('-')
-    puts "~~~~Invalid placement~~~~\n" unless check
+    puts "~~~~Invalid placement~~~~\n \n" unless check
     check
   end
 end
