@@ -16,6 +16,11 @@ class Game
     show_board
     player_turn(@player1)
     player_turn(@player2)
+    player_turn(@player1)
+    player_turn(@player2)
+    player_turn(@player1)
+    someone_win_column?
+    player_turn(@player2)
   end
 
   private
@@ -70,17 +75,22 @@ class Game
   def set_winner(direction, index)
     case direction
     when 'row'
-
+      @winner = symbol_owner?(@board[index][0])
     when 'column'
-
+      @winner = symbol_owner?(@board[0][index])
     when 'diagonal'
-
+      @winner = symbol_owner?(@board[0][index])
     end
+    puts @winner
+  end
+
+  def symbol_owner?(player_symbol)
+    @player1.symbol == player_symbol ? @player1.name : @player2.name
   end
 end
 
 class Player
-  attr_reader :symbol
+  attr_reader :symbol, :name
 
   def initialize(name, symbol)
     @name = name
@@ -119,4 +129,5 @@ player1 = Player.new('Player one', 'X')
 player2 = Player.new('Player two', 'O')
 game_board = Game.new(player1, player2)
 
+game_board.start_game
 # TODO: Until player wins, check who won?
