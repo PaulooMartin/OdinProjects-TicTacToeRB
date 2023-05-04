@@ -23,6 +23,7 @@ class Game
       player_turn(@player2)
       check_winner if turns > 2
     end
+    show_board
     puts @winner ? "Congratulations #{@winner}, you won!" : 'It\'s a tie!'
   end
 
@@ -71,7 +72,7 @@ class Game
       column_sym == flattened[index + 3] && column_sym == flattened[index + 6]
     end
     set_winner('column', index) if is_win
-    ris_win
+    is_win
   end
 
   def someone_win_diagonal?
