@@ -19,7 +19,7 @@ class Game
     player_turn(@player1)
     player_turn(@player2)
     player_turn(@player1)
-    someone_win_column?
+    someone_win_diagonal?
     player_turn(@player2)
   end
 
@@ -42,6 +42,8 @@ class Game
     index = -1
     result = @board.any? do |row|
       index += 1
+      next if row[0] == '-'
+
       row.all? { |symbol| symbol == row[0] }
     end
     set_winner('row', index) if result
@@ -53,6 +55,8 @@ class Game
     index = -1
     result = flattened[0..2].any? do |column_sym|
       index += 1
+      next if column_sym == '-'
+
       column_sym == flattened[index + 3] && column_sym == flattened[index + 6]
     end
     set_winner('column', index) if result
@@ -81,7 +85,7 @@ class Game
     when 'diagonal'
       @winner = symbol_owner?(@board[0][index])
     end
-    puts @winner
+    puts "Winner is #{@winner}"
   end
 
   def symbol_owner?(player_symbol)
