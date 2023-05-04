@@ -14,13 +14,18 @@ class Game
 
   def start_game
     show_board
-    player_turn(@player1)
-    player_turn(@player2)
-    player_turn(@player1)
-    player_turn(@player2)
-    player_turn(@player1)
-    someone_win_diagonal?
-    player_turn(@player2)
+    turns = 0
+    until @winner
+      turns += 1
+      player_turn(@player1)
+      win_already = check_winner if turns > 2
+      break if win_already
+      break if turns == 5
+
+      player_turn(@player2)
+      check_winner if turns > 2
+    end
+    puts @winner ? "Congratulations #{@winner}, you won!" : 'It\'s a tie!'
   end
 
   private
@@ -36,6 +41,14 @@ class Game
     check = @board[coords[0]][coords[1]].include?('-')
     puts "~~~~Invalid placement~~~~\n \n" unless check
     check
+  end
+
+  def check_winner
+    return true if someone_win_row?
+
+    return true if someone_win_column?
+
+    return true if someone_win_diagonal?
   end
 
   def someone_win_row?
@@ -83,7 +96,6 @@ class Game
     when 'diagonal'
       @winner = symbol_owner?(@board[0][index])
     end
-    puts "Winner is #{@winner}"
   end
 
   def symbol_owner?(player_symbol)
@@ -132,4 +144,3 @@ player2 = Player.new('Player two', 'O')
 game_board = Game.new(player1, player2)
 
 game_board.start_game
-# TODO: Until player wins, check who won?
