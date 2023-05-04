@@ -39,7 +39,7 @@ class Game
       index += 1
       row.all? { |symbol| symbol == row[0] }
     end
-    who_won('row', index) if result
+    set_winner('row', index) if result
     result
   end
 
@@ -50,7 +50,7 @@ class Game
       index += 1
       column_sym == flattened[index + 3] && column_sym == flattened[index + 6]
     end
-    who_won('column', index) if result
+    set_winner('column', index) if result
     result
   end
 
@@ -63,11 +63,11 @@ class Game
     when flattened[2] == flattened[4] && flattened[2] == flattened[6]
       result = 2
     end
-    who_won('diagonal', index) if result
-    result
+    set_winner('diagonal', result) if result
+    result ? true : false
   end
 
-  def who_won(direction, index)
+  def set_winner(direction, index)
     case direction
     when 'row'
 
