@@ -3,6 +3,7 @@ class Game
     @board = Array.new(3) { Array.new(3, '-') }
     @player1 = player1
     @player2 = player2
+    @winner = nil
   end
 
   def show_board
@@ -33,25 +34,48 @@ class Game
   end
 
   def someone_win_row?
-    @board.any? do |row|
+    index = -1
+    result = @board.any? do |row|
+      index += 1
       row.all? { |symbol| symbol == row[0] }
     end
+    who_won('row', index) if result
+    result
   end
 
   def someone_win_column?
     flattened = @board.flatten
     index = -1
-    flattened[0..2].any? do |column_sym|
+    result = flattened[0..2].any? do |column_sym|
       index += 1
       column_sym == flattened[index + 3] && column_sym == flattened[index + 6]
     end
+    who_won('column', index) if result
+    result
   end
 
   def someone_win_diagonal?
     flattened = @board.flatten
-    corner1 = flattened[0] == flattened[4] && flattened[0] == flattened[8]
-    corner2 = flattened[2] == flattened[4] && flattened[2] == flattened[6]
-    corner1 || corner2
+    result = false
+    case true
+    when flattened[0] == flattened[4] && flattened[0] == flattened[8]
+      result = 0
+    when flattened[2] == flattened[4] && flattened[2] == flattened[6]
+      result = 2
+    end
+    who_won('diagonal', index) if result
+    result
+  end
+
+  def who_won(direction, index)
+    case direction
+    when 'row'
+
+    when 'column'
+
+    when 'diagonal'
+
+    end
   end
 end
 
@@ -95,5 +119,4 @@ player1 = Player.new('Player one', 'X')
 player2 = Player.new('Player two', 'O')
 game_board = Game.new(player1, player2)
 
-puts game_board.someone_win_diagonal?
-# TODO: Until player wins, determine winner
+# TODO: Until player wins, check who won?
