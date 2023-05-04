@@ -66,14 +66,12 @@ class Game
   def someone_win_diagonal?
     flattened = @board.flatten
     result = false
-    case true
-    when flattened[0] == flattened[4] && flattened[0] == flattened[8]
-      result = 0
-    when flattened[2] == flattened[4] && flattened[2] == flattened[6]
-      result = 2
-    end
+    return false if flattened[4] == '-'
+
+    result = 0 if flattened[0] == flattened[4] && flattened[0] == flattened[8]
+    result = 2 if flattened[2] == flattened[4] && flattened[2] == flattened[6]
     set_winner('diagonal', result) if result
-    result ? true : false
+    result
   end
 
   def set_winner(direction, index)
