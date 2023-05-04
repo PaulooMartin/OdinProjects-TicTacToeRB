@@ -13,14 +13,12 @@ class Game
   end
 
   def start_game
-    show_board
     turns = 0
     until @winner
       turns += 1
       player_turn(@player1)
       win_already = check_winner if turns > 2
-      break if win_already
-      break if turns == 5
+      break if breaker(win_already, turns)
 
       player_turn(@player2)
       check_winner if turns > 2
@@ -31,10 +29,10 @@ class Game
   private
 
   def player_turn(player)
+    show_board
     coords = player.turn
     coords = player.turn until valid_placement?(coords)
     @board[coords[0]][coords[1]] = player.symbol
-    show_board
   end
 
   def valid_placement?(coords)
@@ -53,38 +51,38 @@ class Game
 
   def someone_win_row?
     index = -1
-    result = @board.any? do |row|
+    is_win = @board.any? do |row|
       index += 1
       next if row[0] == '-'
 
       row.all? { |symbol| symbol == row[0] }
     end
-    set_winner('row', index) if result
-    result
+    set_winner('row', index) if is_win
+    is_win
   end
 
   def someone_win_column?
     flattened = @board.flatten
     index = -1
-    result = flattened[0..2].any? do |column_sym|
+    is_win = flattened[0..2].any? do |column_sym|
       index += 1
       next if column_sym == '-'
 
       column_sym == flattened[index + 3] && column_sym == flattened[index + 6]
     end
-    set_winner('column', index) if result
-    result
+    set_winner('column', index) if is_win
+    ris_win
   end
 
   def someone_win_diagonal?
     flattened = @board.flatten
-    result = false
+    winner_index = nil
     return false if flattened[4] == '-'
 
-    result = 0 if flattened[0] == flattened[4] && flattened[0] == flattened[8]
-    result = 2 if flattened[2] == flattened[4] && flattened[2] == flattened[6]
-    set_winner('diagonal', result) if result
-    result
+    winner_index = 0 if flattened[0] == flattened[4] && flattened[0] == flattened[8]
+    winner_index = 2 if flattened[2] == flattened[4] && flattened[2] == flattened[6]
+    set_winner('diagonal', winner_index) if winner_index
+    winner_index # returns truthy/falsy
   end
 
   def set_winner(direction, index)
@@ -100,6 +98,10 @@ class Game
 
   def symbol_owner?(player_symbol)
     @player1.symbol == player_symbol ? @player1.name : @player2.name
+  end
+
+  def breaker(win_already, rounds)
+    true if win_already || rounds == 5
   end
 end
 
@@ -120,10 +122,10 @@ class Player
   def grab_coordinates
     coordinates = []
     until valid_coords?(coordinates)
-      puts "#{@name}'s turn (Type in the coordinates: '#,#')"
+      puts "#{@name}'s turn (Type in the coordinates: '1-3, 1-3')"
       coordinates = gets.chomp.split(',')
     end
-    coordinates.map(&:to_i)
+    coordinates.map { |coords| coords.to_i - 1 }
   end
 
   def valid_coords?(coordinates)
@@ -133,7 +135,7 @@ class Player
     check2 = coordinates.all? { |coord| coord.match(/^\d$/) }
     check3 =
       coordinates.all? do |coord|
-        (coord.to_i < 3) && (coord.to_i >= 0)
+        (coord.to_i < 4) && (coord.to_i >= 1)
       end
     check && check2 && check3
   end
