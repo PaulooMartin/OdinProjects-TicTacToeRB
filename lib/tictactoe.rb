@@ -118,12 +118,12 @@ class Player
     grab_coordinates
   end
 
-  private
+  # private
 
   def grab_coordinates
     coordinates = []
     until valid_coords?(coordinates)
-      puts "#{@name}'s turn (Type in the coordinates: '1-3, 1-3')"
+      puts "#{@name}'s turn (Type in the coordinates: '1-3,1-3')"
       coordinates = gets.chomp.split(',')
     end
     coordinates.map { |coords| coords.to_i - 1 }
@@ -143,7 +143,9 @@ class Player
 end
 
 player1 = Player.new('Player one', 'X')
-player2 = Player.new('Player two', 'O')
-game_board = Game.new(player1, player2)
 
-game_board.start_game
+# player1.grab_coordinates
+# player2 = Player.new('Player two', 'O')
+# game_board = Game.new(player1, player2)
+
+# game_board.start_game
