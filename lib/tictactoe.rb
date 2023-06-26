@@ -27,7 +27,7 @@ class Game
     puts @winner ? "Congratulations #{@winner}, you won!" : 'It\'s a tie!'
   end
 
-  private
+  # private
 
   def player_turn(player)
     show_board
@@ -89,15 +89,15 @@ class Game
   def set_winner(direction, index)
     case direction
     when 'row'
-      @winner = symbol_owner?(@board[index][0])
+      @winner = symbol_owner(@board[index][0])
     when 'column'
-      @winner = symbol_owner?(@board[0][index])
+      @winner = symbol_owner(@board[0][index])
     when 'diagonal'
-      @winner = symbol_owner?(@board[0][index])
+      @winner = symbol_owner(@board[0][index])
     end
   end
 
-  def symbol_owner?(player_symbol)
+  def symbol_owner(player_symbol)
     @player1.symbol == player_symbol ? @player1.name : @player2.name
   end
 
@@ -118,7 +118,7 @@ class Player
     grab_coordinates
   end
 
-  # private
+  private
 
   def grab_coordinates
     coordinates = []
